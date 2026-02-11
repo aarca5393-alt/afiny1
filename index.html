@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гостевой дом "Афины" — Главная</title>
+    <!-- Яндекс Карты -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_ключ_API&lang=ru_RU" type="text/javascript"></script>
+    <style>
+        /* === ОСНОВНАЯ ПАЛИТРА: СПОКОЙНЫЕ БЕЖЕВО-КОРИЧНЕВЫЕ ТОНА === */
+        :root {
+            --sand: #f5efe8;        /* Основной фон, светлый песок */
+            --latte: #e8dfd3;       /* Теплый латте, для фоновых блоков */
+            --taupe: #a79a8f;       /* Тауп, для акцентов и рамок */
+            --mocha: #8b7a6b;       /* Мокко, для второстепенных текстов */
+            --espresso: #5e5047;    /* Эспрессо, для заголовков и важных элементов */
+            --cream: #fffaf5;       /* Сливки, для карточек */
+            --gold: #c7aa8b;        /* Приглушенное золото/беж, для акцентов */
+            --shadow: rgba(94, 80, 71, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cormorant Garamond', 'Times New Roman', 'Georgia', serif;
+        }
+
+        body {
+            background-color: var(--sand);
+            color: var(--espresso);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* === ПЛАВНОЕ ПОЯВЛЕНИЕ ПРИ СКРОЛЛЕ === */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1),
+                        transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* === ШАПКА === */
+        header {
+            background: rgba(94, 80, 71, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--cream);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(199, 170, 139, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            color: var(--cream);
+            text-decoration: none;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+        }
+
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            transition: color 0.4s;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* === HERO — МЯГКИЙ ГРАДИЕНТ, БЕЗ РЕЗКИХ ПЕРЕХОДОВ === */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(145deg,
+                rgba(94, 80, 71, 0.65) 0%,
+                rgba(94, 80, 71, 0.45) 100%),
+                url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--cream);
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 40px 60px;
+            background: rgba(245, 239, 232, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: gentleAppear 1.8s ease-out;
+        }
+
+        @keyframes gentleAppear {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--cream);
+            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 32px;
+            letter-spacing: 2px;
+            font-style: italic;
+            opacity: 0.95;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 48px;
+            background: transparent;
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            border: 1px solid var(--cream);
+            transition: all 0.6s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: var(--cream);
+            color: var(--espresso);
+            border-color: var(--cream);
+        }
+
+        /* === ГАЛЕРЕЯ — МЯГКИЕ ТЕНИ, ПЛАВНЫЕ ПЕРЕХОДЫ === */
+        .gallery-section {
+            padding: 100px 0;
+            background: var(--cream);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 400;
+            margin-bottom: 64px;
+            color: var(--espresso);
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: var(--taupe);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 32px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            box-shadow: 0 8px 24px var(--shadow);
+            height: 320px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s;
+            filter: sepia(15%);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px;
+            background: linear-gradient(to top, rgba(94, 80, 71, 0.9), transparent);
+            color: var(--cream);
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.6s;
+        }
+
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .overlay h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .overlay p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* === ПРЕИМУЩЕСТВА — МИНИМАЛИСТИЧНЫЕ КАРТОЧКИ === */
+        .features {
+            padding: 100px 0;
+            background: var(--sand);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 48px 32px;
+            background: var(--cream);
+            border: 1px solid var(--latte);
+            transition: all 0.5s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 16px 32px var(--shadow);
+            transform: translateY(-8px);
+            border-color: var(--taupe);
+        }
+
+        .feature-icon {
+            font-size: 42px;
+            margin-bottom: 24px;
+            color: var(--mocha);
+        }
+
+        .feature-card h3 {
+            font-size: 26px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: var(--espresso);
+            letter-spacing: 1px;
+        }
+
+        .feature-card p {
+            color: var(--mocha);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* === КАРТА И КОНТАКТЫ — ПРИГЛУШЕННЫЕ ТОНА === */
+        .map-section {
+            padding: 100px 0;
+            background: var(--latte);
+        }
+
+        .map-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        #map {
+            height: 480px;
+            width: 100%;
+            border-radius: 2px;
+            box-shadow: 0 12px 32px var(--shadow);
+            filter: grayscale(30%);
+        }
+
+        .contact-info {
+            padding: 48px;
+            background: var(--cream);
+            border: 1px solid var(--taupe);
+        }
+
+        .contact-info h3 {
+            font-size: 36px;
+            font-weight: 400;
+            margin-bottom: 40px;
+            color: var(--espresso);
+            letter-spacing: 2px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            font-size: 18px;
+            color: var(--mocha);
+            padding-bottom: 16px;
+            border-bottom: 1px dashed var(--taupe);
+        }
+
+        .contact-detail:last-child {
+            border-bottom: none;
+        }
+
+        .contact-detail span:first-child {
+            font-size: 20px;
+            color: var(--gold);
+            width: 32px;
+        }
+
+        footer {
+            background: var(--espresso);
+            color: var(--latte);
+            text-align: center;
+            padding: 32px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            border-top: 1px solid var(--gold);
+        }
+
+        /* === АДАПТАЦИЯ === */
+        @media (max-width: 968px) {
+            .hero h1 { font-size: 52px; }
+            .nav-links { gap: 24px; }
+            .map-container { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 16px; }
+            .hero h1 { font-size: 42px; letter-spacing: 4px; }
+            .hero p { font-size: 20px; }
+            .section-title { font-size: 38px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">Athens</a>
+                <div class="nav-links">
+                    <a href="index.html">Главная</a>
+                    <a href="rooms.html">Номера</a>
+                    <a href="#contacts">Контакты</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Афины</h1>
+                <p>Гостевой дом у моря</p>
+                <a href="rooms.html" class="btn">Номера</a>
+            </div>
+        </section>
+
+        <section class="gallery-section fade-in">
+            <div class="container">
+                <h2 class="section-title">Галерея</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80" alt="Лобби">
+                        <div class="overlay">
+                            <h3>Лобби</h3>
+                            <p>Пространство для встреч и отдыха</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=1000&q=80" alt="Терраса">
+                        <div class="overlay">
+                            <h3>Летняя терраса</h3>
+                            <p>Завтраки с видом на сад</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1000&q=80" alt="Бассейн">
+                        <div class="overlay">
+                            <h3>Бассейн</h3>
+                            <p>Расслабление в тени олив</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features fade-in">
+            <div class="container">
+                <h2 class="section-title">Об отеле</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌿</div>
+                        <h3>Расположение</h3>
+                        <p>Тихий район в пяти минутах от набережной. Вокруг — зелень и свежий воздух.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏛</div>
+                        <h3>Атмосфера</h3>
+                        <p>Камерный отель с индивидуальным подходом. Минимум гостей — максимум комфорта.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🍊</div>
+                        <h3>Завтраки</h3>
+                        <p>Домашняя кухня, свежая выпечка, местные фрукты и фермерские продукты.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacts" class="map-section fade-in">
+            <div class="container">
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="contact-info">
+                        <h3>Контакты</h3>
+                        <div class="contact-detail">
+                            <span>📍</span>
+                            <span>г. Сочи, ул. Приморская, 15</span>
+                        </div>
+                        <div class="contact-detail">
+                            <span>📞</span>
+                            <span>+7 (800) 123-45-67</span>
+                        </div>
+                        <div class="contact-detail">
+                            <span>✉️</span>
+                            <span>welcome@athens.ru</span>
+                        </div>
+                        <div class="contact-detail">
+                            <span>⏰</span>
+                            <span>Служба приёма: круглосуточно</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Гостевой дом «Афины» · 2026</p>
+    </footer>
+
+    <script>
+        // Плавное появление при скролле
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Яндекс Карты
+        ymaps.ready(initMap);
+
+        function initMap() {
+            var map = new ymaps.Map('map', {
+                center: [43.5855, 39.7203],
+                zoom: 16,
+                controls: ['zoomControl']
+            });
+
+            var placemark = new ymaps.Placemark([43.5855, 39.7203], {
+                hintContent: 'Гостевой дом "Афины"'
+            }, {
+                preset: 'islands#brownDotIcon',
+                iconColor: '#8b7a6b'
+            });
+
+            map.geoObjects.add(placemark);
+            map.behaviors.disable('scrollZoom');
+        }
+    </script>
+</body>
+</html>
